@@ -10,4 +10,3 @@ ENV APP_ENV /projects/t-account-picker
 RUN mkdir -p $APP_ENV
 
 WORKDIR $APP_ENV
-
