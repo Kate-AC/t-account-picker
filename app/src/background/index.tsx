@@ -65,15 +65,15 @@ const loadSpreadSheet = async () => {
       let row = rows[i];
       switchMode(row);
       if (mode === 'white' && -1 < row.indexOf('@')) {
-        whiteList.push(row.split(',')[3]);
+        whiteList.push(row.split(',')[3].replace('"', '').replace('"', ''));
       }
 
       if (mode === 'black' && -1 < row.indexOf('@')) {
-        blackList.push(row.split(',')[3]);
+        blackList.push(row.split(',')[3].replace('"', '').replace('"', ''));
       }
 
       if (mode === 'unchecked' && -1 < row.indexOf('@')) {
-        uncheckedList.push(row.split(',')[3]);
+        uncheckedList.push(row.split(',')[3].replace('"', '').replace('"', ''));
       }
     }
 
