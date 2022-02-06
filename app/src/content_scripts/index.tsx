@@ -7,19 +7,17 @@ const Content = () => {
   const [list, setList] = useState(null);
   const idName = "t-account-picker";
 
-  // fooksが反応しないので無理やり動かす
+  // hooksが反応しないので無理やり動かす
   setInterval(() => {
     if (window.location.pathname === path) return;
     setPath(window.location.pathname);
   }, 500);
 
   useEffect(() => {
-    console.log(9999);
     const style: any = document.querySelector('#' + idName);
     if (style !== null) {
       style.textContent = '';
     }
-    console.log(list);
     rewrite(list)
   }, [path]);
 

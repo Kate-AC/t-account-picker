@@ -1,22 +1,19 @@
 import axios from "axios";
 
-chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.sync.get(['list'], (value: any) => {
-    if (0 === Object.entries(value).length) {
-      chrome.tabs.query({ active: true, currentWindow: true }, loadSpreadSheet);
-      return;
-    }
+chrome.runtime.onInstalled.addListener(() => main());
+chrome.runtime.onStartup.addListener(() => main());
 
-    const currentTime = parseInt(String(Date.now()).slice(0, -3));
-    // 5分後再取得
-    if (300 < currentTime - value.list.lastUpdate) {
-      chrome.tabs.query({ active: true, currentWindow: true }, loadSpreadSheet);
-      return;
-    }
-  });
+const main = () => {
+  chrome.tabs.query({ active: true, currentWindow: true }, loadSpreadSheet);
 
-  setInterval(() => chrome.tabs.query({ active: true, currentWindow: true }, sendList), 500);
-});
+  setInterval(() => {
+    chrome.tabs.query({ active: true, currentWindow: true }, loadSpreadSheet);
+  }, 1000 * 180);
+
+  setInterval(() => {
+    chrome.tabs.query({ active: true, currentWindow: true }, sendList);
+  }, 500);
+}
 
 const sendList = (tabs: any) => {
   chrome.storage.sync.get(['list'], (value: any) => {
@@ -80,8 +77,7 @@ const loadSpreadSheet = async () => {
     const list = {
       'whiteList': whiteList,
       'blackList': blackList,
-      'uncheckedList': uncheckedList,
-      'lastUpdate': parseInt(String(Date.now()).slice(0, -3)),
+      'uncheckedList': uncheckedList
     }
 
     chrome.storage.sync.set({'list': list }, () => console.log('Updated list.'));
